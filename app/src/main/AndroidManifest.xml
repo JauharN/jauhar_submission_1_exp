@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Camera Permission -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Storage Permissions untuk Android 13+ -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- Legacy permission untuk Android < 13 -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <!-- Camera Feature -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <application
+        android:name=".StoryApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.JauharNafisSubmission1Expert"
+        tools:targetApi="31">
+
+        <!-- Splash Activity sebagai launcher -->
+        <activity
+            android:name=".features.splash.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.JauharNafisSubmission1Expert">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Auth Activities -->
+        <activity
+            android:name=".features.auth.presentation.login.LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".features.auth.presentation.register.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Story Activities -->
+        <activity
+            android:name=".features.story.presentation.list.MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.story.presentation.detail.DetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.story.presentation.add.AddStoryActivity"
+            android:exported="false" />
+
+        <!-- File Provider untuk Camera -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.dicoding.jauharnafissubmission1expert.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest>

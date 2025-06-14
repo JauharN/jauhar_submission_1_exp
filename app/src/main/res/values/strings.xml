@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Story App</string>
+
+    <!-- Auth -->
+    <string name="title_login">Masuk</string>
+    <string name="title_register">Daftar</string>
+    <string name="email">Email</string>
+    <string name="password">Kata Sandi</string>
+    <string name="name">Nama</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="dont_have_account">Belum punya akun?</string>
+    <string name="already_have_account">Sudah punya akun?</string>
+
+    <!-- Story -->
+    <string name="stories">Cerita</string>
+    <string name="add_story">Tambah Cerita</string>
+    <string name="description">Deskripsi</string>
+    <string name="upload">Unggah</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+
+    <!-- Messages -->
+    <string name="loading">Memuat…</string>
+    <string name="success">Berhasil</string>
+    <string name="error">Terjadi kesalahan</string>
+    <string name="empty_data">Data kosong</string>
+    <string name="logout">Keluar</string>
+    <string name="logout_confirmation">Apakah Anda yakin ingin keluar?</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+
+    <!-- Validation -->
+    <string name="error_email_invalid">Format email tidak valid</string>
+    <string name="error_password_short">Password minimal 8 karakter</string>
+    <string name="error_field_empty">Field tidak boleh kosong</string>
+</resources>

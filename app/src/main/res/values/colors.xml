@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors - Middle East Inspired -->
+    <color name="primary">#FF9800</color> <!-- Warm Orange -->
+    <color name="primary_dark">#F57C00</color>
+    <color name="primary_light">#FFB74D</color>
+
+    <!-- Accent Colors -->
+    <color name="accent">#FFD54F</color> <!-- Golden Yellow -->
+    <color name="accent_dark">#FFC107</color>
+
+    <!-- Background Colors -->
+    <color name="background">#FFFAF6</color> <!-- Warm White -->
+    <color name="surface">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+
+    <!-- System Colors -->
+    <color name="error">#D32F2F</color>
+    <color name="success">#388E3C</color>
+    <color name="warning">#FFA000</color>
+
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#FFB74D</color>
+    <color name="gradient_end">#FF6F00</color>
+
+    <!-- Additional -->
+    <color name="divider">#E0E0E0</color>
+    <color name="transparent">#00000000</color>
+    <color name="shadow">#1A000000</color>
+</resources>
