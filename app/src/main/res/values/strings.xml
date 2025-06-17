@@ -11,6 +11,8 @@
     <string name="register">Daftar</string>
     <string name="dont_have_account">Belum punya akun?</string>
     <string name="already_have_account">Sudah punya akun?</string>
+    <string name="login_success">Login berhasil</string>
+    <string name="register_success">Registrasi berhasil, silakan login</string>
 
     <!-- Story -->
     <string name="stories">Cerita</string>
@@ -19,19 +21,54 @@
     <string name="upload">Unggah</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
+    <string name="upload_success">Cerita berhasil diunggah</string>
+    <string name="upload_failed">Gagal mengunggah cerita</string>
+    <string name="story_detail">Detail Cerita</string>
+    <string name="share_story">Bagikan Cerita</string>
+    <string name="add_location">Tambahkan lokasi</string>
+    <string name="location_obtained">Lokasi berhasil didapatkan</string>
+    <string name="location_not_available">Lokasi tidak tersedia</string>
 
     <!-- Messages -->
     <string name="loading">Memuat…</string>
     <string name="success">Berhasil</string>
     <string name="error">Terjadi kesalahan</string>
     <string name="empty_data">Data kosong</string>
+    <string name="empty_story">Belum ada cerita yang dibagikan</string>
     <string name="logout">Keluar</string>
     <string name="logout_confirmation">Apakah Anda yakin ingin keluar?</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Batal</string>
 
     <!-- Validation -->
     <string name="error_email_invalid">Format email tidak valid</string>
     <string name="error_password_short">Password minimal 8 karakter</string>
     <string name="error_field_empty">Field tidak boleh kosong</string>
+    <string name="error_image_required">Pilih gambar terlebih dahulu</string>
+    <string name="error_description_required">Deskripsi tidak boleh kosong</string>
+
+    <!-- Permission -->
+    <string name="permission_required">Permission Diperlukan</string>
+    <string name="permission_camera_message">Aplikasi memerlukan permission untuk mengakses Kamera</string>
+    <string name="permission_gallery_message">Aplikasi memerlukan permission untuk mengakses Galeri</string>
+    <string name="permission_location_message">Aplikasi memerlukan permission untuk mengakses Lokasi</string>
+
+    <!-- UI -->
+    <string name="add_photo">Tambah Foto</string>
+    <string name="write_description">Tulis deskripsi ceritamu…</string>
+    <string name="choose_image">Pilih Gambar</string>
+    <string name="dicoding_story_info">Cerita ini dibagikan melalui Dicoding Story</string>
+    <string name="share_from">Dibagikan dari Dicoding Story App</string>
+    <string name="check_story">Lihat cerita ini dari %s!</string>
+
+    <!-- Date -->
+    <string name="just_now">Baru saja</string>
+    <string name="minutes_ago">%d menit yang lalu</string>
+    <string name="hours_ago">%d jam yang lalu</string>
+    <string name="days_ago">%d hari yang lalu</string>
+
+    <!-- System -->
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 </resources>

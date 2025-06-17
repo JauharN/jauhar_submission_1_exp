@@ -14,6 +14,7 @@ import java.util.*
 object ImageUtils {
 
     private const val FILENAME_FORMAT = "dd-MMM-yyyy"
+    private const val MAX_IMAGE_SIZE = 1000000 // 1MB in bytes
 
     private val timeStamp: String = SimpleDateFormat(
         FILENAME_FORMAT,
@@ -42,18 +43,51 @@ object ImageUtils {
 
     fun reduceFileImage(file: File): File {
         val bitmap = BitmapFactory.decodeFile(file.path)
+
+        // Calculate scale factor to reduce resolution if needed
+        var actualHeight = bitmap.height
+        var actualWidth = bitmap.width
+        val maxHeight = 1024.0f
+        val maxWidth = 1024.0f
+        var imgRatio = actualWidth.toFloat() / actualHeight.toFloat()
+        val maxRatio = maxWidth / maxHeight
+
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                imgRatio = maxHeight / actualHeight
+                actualWidth = (imgRatio * actualWidth).toInt()
+                actualHeight = maxHeight.toInt()
+            } else if (imgRatio > maxRatio) {
+                imgRatio = maxWidth / actualWidth
+                actualHeight = (imgRatio * actualHeight).toInt()
+                actualWidth = maxWidth.toInt()
+            } else {
+                actualHeight = maxHeight.toInt()
+                actualWidth = maxWidth.toInt()
+            }
+        }
+
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, actualWidth, actualHeight, true)
+
+        // Compress with quality adjustment
         var compressQuality = 100
         var streamLength: Int
 
         do {
             val bmpStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
             val bmpPicByteArray = bmpStream.toByteArray()
             streamLength = bmpPicByteArray.size
             compressQuality -= 5
-        } while (streamLength > Constants.MAX_IMAGE_SIZE)
+        } while (streamLength > MAX_IMAGE_SIZE && compressQuality > 0)
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+
+        // Recycle bitmaps to free memory
+        if (bitmap != scaledBitmap) {
+            bitmap.recycle()
+        }
+        scaledBitmap.recycle()
 
         return file
     }

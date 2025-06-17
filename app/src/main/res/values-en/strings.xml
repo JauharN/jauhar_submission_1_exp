@@ -1,2 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Story App</string>
+
+    <!-- Auth -->
+    <string name="title_login">Login</string>
+    <string name="title_register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="login_success">Login successful</string>
+    <string name="register_success">Registration successful, please login</string>
+
+    <!-- Story -->
+    <string name="stories">Stories</string>
+    <string name="add_story">Add Story</string>
+    <string name="description">Description</string>
+    <string name="upload">Upload</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload_success">Story uploaded successfully</string>
+    <string name="upload_failed">Failed to upload story</string>
+    <string name="story_detail">Story Detail</string>
+    <string name="share_story">Share Story</string>
+    <string name="add_location">Add location</string>
+    <string name="location_obtained">Location obtained successfully</string>
+    <string name="location_not_available">Location not available</string>
+
+    <!-- Messages -->
+    <string name="loading">Loading…</string>
+    <string name="success">Success</string>
+    <string name="error">An error occurred</string>
+    <string name="empty_data">No data</string>
+    <string name="empty_story">No stories shared yet</string>
+    <string name="logout">Logout</string>
+    <string name="logout_confirmation">Are you sure you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Validation -->
+    <string name="error_email_invalid">Invalid email format</string>
+    <string name="error_password_short">Password must be at least 8 characters</string>
+    <string name="error_field_empty">Field cannot be empty</string>
+    <string name="error_image_required">Please select an image first</string>
+    <string name="error_description_required">Description cannot be empty</string>
+
+    <!-- Permission -->
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_camera_message">App needs permission to access Camera</string>
+    <string name="permission_gallery_message">App needs permission to access Gallery</string>
+    <string name="permission_location_message">App needs permission to access Location</string>
+
+    <!-- UI -->
+    <string name="add_photo">Add Photo</string>
+    <string name="write_description">Write your story description…</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="dicoding_story_info">This story is shared through Dicoding Story</string>
+    <string name="share_from">Shared from Dicoding Story App</string>
+    <string name="check_story">Check out this story from %s!</string>
+
+    <!-- Date -->
+    <string name="just_now">Just now</string>
+    <string name="minutes_ago">%d minutes ago</string>
+    <string name="hours_ago">%d hours ago</string>
+    <string name="days_ago">%d days ago</string>
+</resources>

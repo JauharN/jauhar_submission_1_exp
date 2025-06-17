@@ -55,4 +55,9 @@
         <item name="android:fontFamily">@font/poppins_regular</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <!-- Collapsing Toolbar Text Style -->
+    <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
 </resources>

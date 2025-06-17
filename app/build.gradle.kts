@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.afin.jauharnafissubmission1expert"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.afin.jauharnafissubmission1expert"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -49,6 +49,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity.ktx)
+    implementation (libs.play.services.location)
+
 
     // Lifecycle & Architecture Components
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -87,7 +89,7 @@ dependencies {
     implementation(libs.androidx.camera.view)
 
     // Image Picker
-    implementation(libs.imagepicker)
+    implementation("com.github.Dhaval2404:ImagePicker:2.1")
 
     // Permission Handler
     implementation(libs.dexter)

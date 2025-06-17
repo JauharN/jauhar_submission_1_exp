@@ -1,4 +1,5 @@
 <resources>
+
     <style name="Theme.JauharNafisSubmission1Expert" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/primary</item>
@@ -21,6 +22,11 @@
 
         <!-- Font -->
         <item name="android:fontFamily">@font/poppins_regular</item>
+
+        <!-- Enable window content transitions -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
 
     <!-- Splash Theme -->
@@ -28,5 +34,10 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="android:statusBarColor">@color/primary</item>
         <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- ThemeOverlay for AppCompat compatibility -->
+    <style name="ThemeOverlay.AppCompat.Dark.ActionBar" parent="ThemeOverlay.Material3.Dark.ActionBar">
+        <item name="colorControlNormal">@color/surface</item>
     </style>
 </resources>
