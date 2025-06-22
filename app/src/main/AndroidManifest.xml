@@ -8,6 +8,10 @@
     <!-- Camera Permission -->
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- Location Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <!-- Storage Permissions untuk Android 13+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -18,9 +22,20 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
 
+    <!-- Widget update permission -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <!-- Camera Feature -->
     <uses-feature
         android:name="android.hardware.camera"
+        android:required="false" />
+
+    <!-- Location Feature -->
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
         android:required="false" />
 
     <application
@@ -82,7 +97,23 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-    </application>
+        <!-- Stack Widget -->
+        <receiver
+            android:name=".features.widget.StoryWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/story_widget_info" />
+        </receiver>
 
+        <!-- Widget Service -->
+        <service
+            android:name=".features.widget.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+    </application>
 
 </manifest>

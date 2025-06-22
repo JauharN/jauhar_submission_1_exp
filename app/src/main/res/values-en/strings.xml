@@ -69,4 +69,13 @@
     <string name="minutes_ago">%d minutes ago</string>
     <string name="hours_ago">%d hours ago</string>
     <string name="days_ago">%d days ago</string>
+
+    <!-- Widget -->
+    <string name="widget_description">Display your latest stories</string>
+    <string name="widget_empty">No stories</string>
+    <string name="widget_loading">Loading stories…</string>
+
+    <!-- System -->
+    <string name="version">v1.0.0</string>
+    <string name="intro">Share Your Story</string>
 </resources>

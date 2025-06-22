@@ -27,6 +27,7 @@ import com.afin.jauharnafissubmission1expert.R
 import com.afin.jauharnafissubmission1expert.core.utils.ImageUtils
 import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.core.utils.ViewModelFactory
+import com.afin.jauharnafissubmission1expert.core.utils.WidgetUpdateHelper
 import com.afin.jauharnafissubmission1expert.core.utils.showToast
 import com.afin.jauharnafissubmission1expert.databinding.ActivityAddStoryBinding
 import com.afin.jauharnafissubmission1expert.features.story.presentation.list.MainActivity
@@ -328,6 +329,10 @@ class AddStoryActivity : AppCompatActivity() {
             is Result.Success -> {
                 showLoading(false)
                 showToast(result.data)
+
+                // Update widget setelah berhasil upload
+                WidgetUpdateHelper.updateWidget(this)
+
                 navigateToMain()
             }
 

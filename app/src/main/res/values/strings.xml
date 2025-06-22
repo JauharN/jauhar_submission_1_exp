@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Story App</string>
 
@@ -68,6 +69,11 @@
     <string name="minutes_ago">%d menit yang lalu</string>
     <string name="hours_ago">%d jam yang lalu</string>
     <string name="days_ago">%d hari yang lalu</string>
+
+    <!-- Widget -->
+    <string name="widget_description">Tampilkan cerita terbaru Anda</string>
+    <string name="widget_empty">Tidak ada cerita</string>
+    <string name="widget_loading">Memuat cerita…</string>
 
     <!-- System -->
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
