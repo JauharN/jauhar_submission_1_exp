@@ -1,7 +1,5 @@
 package com.afin.jauharnafissubmission1expert.features.auth.presentation.register
 
-import android.app.Activity.OVERRIDE_TRANSITION_CLOSE
-import android.app.Activity.OVERRIDE_TRANSITION_OPEN
 import android.content.Intent
 import android.os.Bundle
 import android.view.View

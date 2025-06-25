@@ -16,7 +16,7 @@ class MainViewModel(private val repository: StoryRepository) : ViewModel() {
     // Digunakan saat swipe refresh dan onResume
     fun refreshStories(): LiveData<Result<List<Story>>> = repository.getStories()
 
-    fun getUser() = repository.getUser()
+    // fun getUser() = repository.getUser()
 
     fun logout() {
         viewModelScope.launch {

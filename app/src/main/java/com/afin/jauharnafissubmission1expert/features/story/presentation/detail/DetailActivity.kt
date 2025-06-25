@@ -1,6 +1,5 @@
 package com.afin.jauharnafissubmission1expert.features.story.presentation.detail
 
-import android.app.Activity.OVERRIDE_TRANSITION_CLOSE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +10,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.afin.jauharnafissubmission1expert.R
 import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.core.utils.ViewModelFactory
 import com.afin.jauharnafissubmission1expert.core.utils.formatDate

@@ -3,7 +3,6 @@ package com.afin.jauharnafissubmission1expert.features.splash
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.app.Activity.OVERRIDE_TRANSITION_OPEN
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.afin.jauharnafissubmission1expert.BuildConfig
-import com.afin.jauharnafissubmission1expert.R
 import com.afin.jauharnafissubmission1expert.core.di.Injection
 import com.afin.jauharnafissubmission1expert.databinding.ActivitySplashBinding
 import com.afin.jauharnafissubmission1expert.features.auth.presentation.login.LoginActivity
