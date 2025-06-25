@@ -44,7 +44,7 @@ object ImageUtils {
     fun reduceFileImage(file: File): File {
         val bitmap = BitmapFactory.decodeFile(file.path)
 
-        // Calculate scale factor to reduce resolution if needed
+        // Kalkulasi mengurangi resolusi gambar kalau terlalu besar
         var actualHeight = bitmap.height
         var actualWidth = bitmap.width
         val maxHeight = 1024.0f
@@ -69,7 +69,7 @@ object ImageUtils {
 
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, actualWidth, actualHeight, true)
 
-        // Compress with quality adjustment
+        // Mengkompress
         var compressQuality = 100
         var streamLength: Int
 
@@ -83,40 +83,11 @@ object ImageUtils {
 
         scaledBitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
 
-        // Recycle bitmaps to free memory
         if (bitmap != scaledBitmap) {
             bitmap.recycle()
         }
         scaledBitmap.recycle()
 
         return file
-    }
-
-    fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
-        val matrix = Matrix()
-        return if (isBackCamera) {
-            matrix.postRotate(90f)
-            Bitmap.createBitmap(
-                bitmap,
-                0,
-                0,
-                bitmap.width,
-                bitmap.height,
-                matrix,
-                true
-            )
-        } else {
-            matrix.postRotate(-90f)
-            matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
-            Bitmap.createBitmap(
-                bitmap,
-                0,
-                0,
-                bitmap.width,
-                bitmap.height,
-                matrix,
-                true
-            )
-        }
     }
 }

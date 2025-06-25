@@ -34,7 +34,6 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup window insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -44,18 +43,18 @@ class SplashActivity : AppCompatActivity() {
         // Set version
         binding.tvVersion.text = "v${BuildConfig.VERSION_NAME}"
 
-        // Start animation and check session
+        // Memulai animasi
         startAnimation()
         checkUserSession()
     }
 
     private fun startAnimation() {
-        // Fade in animation for logo container
+        // Fade in
         val fadeIn = ObjectAnimator.ofFloat(binding.logoContainer, View.ALPHA, 0f, 1f).apply {
             duration = 1000
         }
 
-        // Scale animation for logo
+        // Scale animation untuk logo
         val scaleX = ObjectAnimator.ofFloat(binding.ivLogo, View.SCALE_X, 0.8f, 1f).apply {
             duration = 800
         }
@@ -63,7 +62,7 @@ class SplashActivity : AppCompatActivity() {
             duration = 800
         }
 
-        // Translation animation for app name
+        // Translation animation untuk nama app
         val translationY = ObjectAnimator.ofFloat(
             binding.tvAppName,
             View.TRANSLATION_Y,
@@ -74,7 +73,6 @@ class SplashActivity : AppCompatActivity() {
             startDelay = 200
         }
 
-        // Create animator set
         AnimatorSet().apply {
             playTogether(fadeIn, scaleX, scaleY, translationY)
             start()
@@ -83,29 +81,26 @@ class SplashActivity : AppCompatActivity() {
 
     private fun checkUserSession() {
         lifecycleScope.launch {
-            // Show loading after initial animation
+
             delay(1500)
             binding.progressBar.visibility = View.VISIBLE
 
-            // Check user session
+            // Cek user session
             val userPreference = Injection.provideUserPreference(this@SplashActivity)
             val user = userPreference.getUser().first()
 
-            // Add delay for better UX
             delay(1000)
 
-            // Navigate based on session
             val intent = if (user.isLogin && user.token.isNotEmpty()) {
                 Intent(this@SplashActivity, MainActivity::class.java)
             } else {
                 Intent(this@SplashActivity, LoginActivity::class.java)
             }
 
-            // Clear task and start new
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
 
-            // Add fade out animation using new API
+            // fade out animation
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 overrideActivityTransition(
                     OVERRIDE_TRANSITION_OPEN,

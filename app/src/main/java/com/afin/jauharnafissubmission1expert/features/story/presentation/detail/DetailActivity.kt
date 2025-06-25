@@ -41,7 +41,6 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup window insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -67,7 +66,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun loadStoryData() {
-        // Check if story passed directly
         val story = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(EXTRA_STORY, Story::class.java)
         } else {
@@ -76,16 +74,16 @@ class DetailActivity : AppCompatActivity() {
         }
 
         if (story != null) {
-            // Display story directly
+            // Display story
             currentStory = story
             displayStory(story)
         } else {
-            // Load from API if only ID passed
+            // Load from API jika ID passed
             val storyId = intent.getStringExtra(EXTRA_STORY_ID)
             if (storyId != null) {
                 loadStoryFromApi(storyId)
             } else {
-                // No data, finish activity
+                // kalau no data, finish activity
                 finish()
             }
         }
@@ -106,7 +104,6 @@ class DetailActivity : AppCompatActivity() {
 
                 is Result.Error -> {
                     showLoading(false)
-                    // Show error and finish
                     finish()
                 }
             }
@@ -122,6 +119,12 @@ class DetailActivity : AppCompatActivity() {
                 .centerCrop()
                 .into(ivDetailPhoto)
 
+            ivDetailPhoto.setOnClickListener {
+                val intent = Intent(this@DetailActivity, FullImageActivity::class.java)
+                intent.putExtra(FullImageActivity.EXTRA_IMAGE_URL, story.photoUrl)
+                startActivity(intent)
+            }
+
             // Set user info
             tvDetailName.text = story.name
             tvAvatar.text = story.name.firstOrNull()?.toString()?.uppercase() ?: "?"
@@ -130,7 +133,7 @@ class DetailActivity : AppCompatActivity() {
             // Set description
             tvDetailDescription.text = story.description
 
-            // Set location if available
+            // Set location jika tersedia
             if (story.lat != null && story.lon != null) {
                 llLocation.visibility = View.VISIBLE
                 tvLocation.text = "Lat: ${story.lat}, Lon: ${story.lon}"
@@ -175,7 +178,7 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        // Add exit animation
+        // exit animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             overrideActivityTransition(
                 OVERRIDE_TRANSITION_CLOSE,

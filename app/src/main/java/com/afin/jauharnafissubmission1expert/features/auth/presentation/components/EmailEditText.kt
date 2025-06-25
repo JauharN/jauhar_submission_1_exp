@@ -10,6 +10,8 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import com.afin.jauharnafissubmission1expert.R
 
+// Custom EditText untuk validasi email sesuai kriteria
+
 class EmailEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null

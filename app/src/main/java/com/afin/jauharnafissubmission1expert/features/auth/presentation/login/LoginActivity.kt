@@ -33,7 +33,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup window insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -44,8 +43,8 @@ class LoginActivity : AppCompatActivity() {
         checkIfLoggedIn()
     }
 
+    // Dilakukan pengecekan apakah user sudah login apa belum
     private fun checkIfLoggedIn() {
-        // Check if user is already logged in
         lifecycleScope.launch {
             viewModel.getUser().collect { user ->
                 if (user.isLogin && user.token.isNotEmpty()) {
@@ -56,10 +55,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        // Hide back button on login (no previous screen)
         binding.btnBack.visibility = View.GONE
 
-        // Login button click
+        // Login button
         binding.btnLogin.setOnClickListener {
             val email = binding.edLoginEmail.text.toString().trim()
             val password = binding.edLoginPassword.text.toString()
@@ -69,12 +67,12 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // Register link click
+        // Register Button
         binding.tvRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
 
-            // Use new transition API
+            // memakai animasi transisi
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 overrideActivityTransition(
                     OVERRIDE_TRANSITION_OPEN,

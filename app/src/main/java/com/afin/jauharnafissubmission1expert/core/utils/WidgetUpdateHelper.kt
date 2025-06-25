@@ -8,6 +8,7 @@ import com.afin.jauharnafissubmission1expert.features.widget.StoryWidget
 
 object WidgetUpdateHelper {
 
+    // Fungsi untuk memperbarui widget
     fun updateWidget(context: Context) {
         val intent = Intent(context, StoryWidget::class.java).apply {
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE

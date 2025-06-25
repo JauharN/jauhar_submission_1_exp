@@ -14,6 +14,8 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import com.afin.jauharnafissubmission1expert.R
 
+// PasswordEditText untuk validasi password sesuai kriteria
+
 class PasswordEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null

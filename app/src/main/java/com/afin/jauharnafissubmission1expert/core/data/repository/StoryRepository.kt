@@ -3,13 +3,14 @@ package com.afin.jauharnafissubmission1expert.core.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.afin.jauharnafissubmission1expert.core.data.local.preference.UserPreference
-import com.afin.jauharnafissubmission1expert.core.data.remote.api.ApiService
+import com.afin.jauharnafissubmission1expert.core.data.remote.api.ApiConfig
 import com.afin.jauharnafissubmission1expert.core.data.remote.response.ErrorResponse
 import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.features.auth.domain.model.User
 import com.afin.jauharnafissubmission1expert.features.story.domain.model.Story
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -19,15 +20,21 @@ import retrofit2.HttpException
 import java.io.File
 
 class StoryRepository private constructor(
-    private val apiService: ApiService,
     private val userPreference: UserPreference
 ) {
 
-    // Authentication Functions
+    // Get API Service dengan current token
+    private suspend fun getApiService(): com.afin.jauharnafissubmission1expert.core.data.remote.api.ApiService {
+        val token = userPreference.getUser().first().token
+        return ApiConfig.getApiService(token)
+    }
+
+    // Fungsi Auth
     fun register(name: String, email: String, password: String): LiveData<Result<String>> =
         liveData {
             emit(Result.Loading)
             try {
+                val apiService = ApiConfig.getApiService()
                 val response = apiService.register(name, email, password)
                 if (!response.error) {
                     emit(Result.Success(response.message))
@@ -46,6 +53,7 @@ class StoryRepository private constructor(
     fun login(email: String, password: String): LiveData<Result<User>> = liveData {
         emit(Result.Loading)
         try {
+            val apiService = ApiConfig.getApiService() // No token needed for login
             val response = apiService.login(email, password)
             if (!response.error && response.loginResult != null) {
                 val user = User(
@@ -68,10 +76,11 @@ class StoryRepository private constructor(
         }
     }
 
-    // Story Functions
+    // Fungsi Story
     fun getStories(): LiveData<Result<List<Story>>> = liveData {
         emit(Result.Loading)
         try {
+            val apiService = getApiService()
             val response = apiService.getStories()
             if (!response.error) {
                 val stories = response.listStory.map { item ->
@@ -101,6 +110,7 @@ class StoryRepository private constructor(
     fun getStoryDetail(id: String): LiveData<Result<Story>> = liveData {
         emit(Result.Loading)
         try {
+            val apiService = getApiService()
             val response = apiService.getStoryDetail(id)
             if (!response.error) {
                 val story = Story(
@@ -133,6 +143,8 @@ class StoryRepository private constructor(
     ): LiveData<Result<String>> = liveData {
         emit(Result.Loading)
         try {
+            val apiService = getApiService()
+
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo",
@@ -165,7 +177,7 @@ class StoryRepository private constructor(
         }
     }
 
-    // User Session Functions
+    // Sesi User
     fun getUser(): Flow<User> = userPreference.getUser()
 
     suspend fun logout() {
@@ -177,11 +189,10 @@ class StoryRepository private constructor(
         private var instance: StoryRepository? = null
 
         fun getInstance(
-            apiService: ApiService,
             userPreference: UserPreference
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService, userPreference)
+                instance ?: StoryRepository(userPreference)
             }.also { instance = it }
     }
 }

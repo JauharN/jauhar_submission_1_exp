@@ -64,7 +64,6 @@ class AddStoryActivity : AppCompatActivity() {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup window insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -81,7 +80,7 @@ class AddStoryActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {
                 finish()
 
-                // Terapkan transisi aktivitas
+                // transisi animasi
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                     overrideActivityTransition(
                         OVERRIDE_TRANSITION_CLOSE,
@@ -149,7 +148,7 @@ class AddStoryActivity : AppCompatActivity() {
 
     private fun checkGalleryPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13+ uses READ_MEDIA_IMAGES
+            // Android 13+ pakai READ_MEDIA_IMAGES
             Dexter.withContext(this)
                 .withPermission(Manifest.permission.READ_MEDIA_IMAGES)
                 .withListener(object : PermissionListener {
@@ -169,7 +168,7 @@ class AddStoryActivity : AppCompatActivity() {
                     }
                 }).check()
         } else {
-            // Android < 13 uses READ_EXTERNAL_STORAGE
+            // Android < 13 pakai READ_EXTERNAL_STORAGE
             Dexter.withContext(this)
                 .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(object : PermissionListener {

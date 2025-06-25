@@ -32,7 +32,6 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup window insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -48,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        // Register button click
+        // Register button
         binding.btnRegister.setOnClickListener {
             val name = binding.edRegisterName.text.toString().trim()
             val email = binding.edRegisterEmail.text.toString().trim()
@@ -59,7 +58,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        // Login link click
+        // Login link
         binding.tvLogin.setOnClickListener {
             navigateToLogin()
         }

@@ -11,6 +11,7 @@ import com.afin.jauharnafissubmission1expert.features.story.presentation.add.Add
 import com.afin.jauharnafissubmission1expert.features.story.presentation.detail.DetailViewModel
 import com.afin.jauharnafissubmission1expert.features.story.presentation.list.MainViewModel
 
+ // View Model Factory untuk membuat instance ViewModel
 class ViewModelFactory private constructor(
     private val storyRepository: StoryRepository
 ) : ViewModelProvider.NewInstanceFactory() {

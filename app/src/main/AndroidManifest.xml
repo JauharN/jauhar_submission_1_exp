@@ -1,36 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Permissions -->
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- Camera Permission -->
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <!-- Location Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Camera Permission -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!-- Storage Permissions untuk Android 13+ -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Storage Permissions untuk Android 13+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-
-    <!-- Legacy permission untuk Android < 13 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> <!-- Legacy permission untuk Android < 13 -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-
-    <!-- Widget update permission -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-    <!-- Camera Feature -->
+        android:maxSdkVersion="32" /> <!-- Widget update permission -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Camera Feature -->
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
-
-    <!-- Location Feature -->
+        android:required="false" /> <!-- Location Feature -->
     <uses-feature
         android:name="android.hardware.location"
         android:required="false" />
@@ -50,7 +35,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JauharNafisSubmission1Expert"
         tools:targetApi="31">
-
+        <activity
+            android:name=".features.story.presentation.detail.FullImageActivity"
+            android:exported="false" />
         <!-- Splash Activity sebagai launcher -->
         <activity
             android:name=".features.splash.SplashActivity"
@@ -58,35 +45,27 @@
             android:theme="@style/Theme.JauharNafisSubmission1Expert">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Auth Activities -->
+        </activity> <!-- Auth Activities -->
         <activity
             android:name=".features.auth.presentation.login.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".features.auth.presentation.register.RegisterActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-
-        <!-- Story Activities -->
+            android:windowSoftInputMode="adjustResize" /> <!-- Story Activities -->
         <activity
             android:name=".features.story.presentation.list.MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".features.story.presentation.detail.DetailActivity"
             android:exported="false" />
-
         <activity
             android:name=".features.story.presentation.add.AddStoryActivity"
-            android:exported="false" />
-
-        <!-- File Provider untuk Camera -->
+            android:exported="false" /> <!-- File Provider untuk Camera -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -95,25 +74,21 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>
-
-        <!-- Stack Widget -->
+        </provider> <!-- Stack Widget -->
         <receiver
             android:name=".features.widget.StoryWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/story_widget_info" />
-        </receiver>
-
-        <!-- Widget Service -->
+        </receiver> <!-- Widget Service -->
         <service
             android:name=".features.widget.StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
     </application>
 
 </manifest>

@@ -40,7 +40,7 @@ class StoryAdapter(
                 // Set user name
                 tvItemName.text = story.name
 
-                // Set avatar with first letter of name
+                // Set avatar (pakai huruf awal user)
                 tvAvatar.text = story.name.firstOrNull()?.toString()?.uppercase() ?: "?"
 
                 // Set date
@@ -49,17 +49,15 @@ class StoryAdapter(
                 // Set description preview
                 tvDescription.text = story.description
 
-                // Set transition name for shared element
                 ivItemPhoto.transitionName = "story_image_${story.id}"
 
-                // Load image with Glide
+                // Load image dengan Glide
                 Glide.with(itemView.context)
                     .load(story.photoUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .centerCrop()
                     .into(ivItemPhoto)
 
-                // Set click listener with image view
                 root.setOnClickListener {
                     onItemClick(story, ivItemPhoto)
                 }

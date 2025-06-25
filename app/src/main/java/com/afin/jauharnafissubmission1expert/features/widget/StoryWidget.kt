@@ -5,8 +5,6 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -14,12 +12,12 @@ import androidx.core.net.toUri
 import com.afin.jauharnafissubmission1expert.R
 import com.afin.jauharnafissubmission1expert.core.data.remote.api.ApiConfig
 import com.afin.jauharnafissubmission1expert.core.di.Injection
-import com.afin.jauharnafissubmission1expert.core.utils.dataStore
 import com.afin.jauharnafissubmission1expert.features.story.presentation.detail.DetailActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
+// fitur widget untuk menampilkan gambar story, sesuai kriteria
 class StoryWidget : AppWidgetProvider() {
 
     companion object {

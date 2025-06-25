@@ -6,14 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:fitsSystemWindows="true"
     tools:context=".features.story.presentation.list.MainActivity">
 
-    <!-- AppBarLayout dengan Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surface"
-        app:elevation="4dp">
+        app:elevation="4dp"
+        app:layout_scrollFlags="scroll|enterAlways">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -32,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/app_name"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/primary"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

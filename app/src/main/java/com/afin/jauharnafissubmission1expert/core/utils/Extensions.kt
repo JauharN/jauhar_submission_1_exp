@@ -13,19 +13,6 @@ import java.util.concurrent.TimeUnit
 // DataStore extension
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constants.PREFS_NAME)
 
-// View extensions
-fun View.show() {
-    visibility = View.VISIBLE
-}
-
-fun View.hide() {
-    visibility = View.GONE
-}
-
-fun View.invisible() {
-    visibility = View.INVISIBLE
-}
-
 // Context extensions
 fun Context.showToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

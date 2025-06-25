@@ -9,18 +9,18 @@
     android:fitsSystemWindows="true"
     tools:context=".features.story.presentation.detail.DetailActivity">
 
-    <!-- AppBarLayout with Collapsing Toolbar -->
+    <!-- AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.Material3.Toolbar.Surface">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             android:fitsSystemWindows="true"
             app:contentScrim="@color/primary"
             app:expandedTitleMarginEnd="64dp"
@@ -28,7 +28,7 @@
             app:expandedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Expanded"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <!-- Story Image -->
+            <!-- Gambar utama -->
             <ImageView
                 android:id="@+id/iv_detail_photo"
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 app:layout_collapseMode="parallax"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
-            <!-- Gradient Overlay -->
+            <!-- Overlay -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -60,42 +60,44 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Content ScrollView -->
+    <!-- Konten -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_large">
 
-            <!-- Content Card -->
+            <!-- Kartu Konten -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_medium"
-                android:layout_marginTop="-32dp"
+                android:layout_marginTop="@dimen/margin_medium"
                 app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="@dimen/corner_radius_large"
                 app:cardElevation="@dimen/elevation_card">
 
+                <!-- Konten Dalam -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="@dimen/padding_large">
 
-                    <!-- User Info Section -->
+                    <!-- Avatar & Nama -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <!-- User Avatar -->
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
@@ -112,10 +114,8 @@
                                 android:textColor="@color/primary_dark"
                                 android:textSize="20sp"
                                 tools:text="J" />
-
                         </com.google.android.material.card.MaterialCardView>
 
-                        <!-- User Name & Date -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -140,10 +140,8 @@
                                 android:textColor="@color/text_secondary"
                                 android:textSize="14sp"
                                 tools:text="2 hours ago" />
-
                         </LinearLayout>
 
-                        <!-- Share Button -->
                         <ImageButton
                             android:id="@+id/btnShare"
                             android:layout_width="48dp"
@@ -152,28 +150,24 @@
                             android:contentDescription="Share"
                             android:src="@drawable/ic_share"
                             app:tint="@color/primary" />
-
                     </LinearLayout>
 
-                    <!-- Divider -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginVertical="@dimen/margin_medium"
                         android:background="@color/divider" />
 
-                    <!-- Description -->
                     <TextView
                         android:id="@+id/tv_detail_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"
-                        android:lineSpacing="6dp"
+                        android:lineSpacingExtra="6dp"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
-                        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
+                        tools:text="Lorem ipsum..." />
 
-                    <!-- Location Info (if available) -->
                     <LinearLayout
                         android:id="@+id/llLocation"
                         android:layout_width="match_parent"
@@ -198,19 +192,17 @@
                             android:fontFamily="@font/poppins_regular"
                             android:textColor="@color/text_secondary"
                             android:textSize="14sp"
-                            tools:text="Jakarta, Indonesia" />
-
+                            tools:text="Jakarta" />
                     </LinearLayout>
-
                 </LinearLayout>
-
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Additional Info Card -->
+            <!-- Info tambahan -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium"
+                android:layout_marginHorizontal="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
                 app:cardBackgroundColor="@color/primary_light"
                 app:cardCornerRadius="@dimen/corner_radius_medium"
                 app:cardElevation="0dp"
@@ -238,21 +230,12 @@
                         android:text="@string/dicoding_story_info"
                         android:textColor="@color/primary"
                         android:textSize="14sp" />
-
                 </LinearLayout>
-
             </com.google.android.material.card.MaterialCardView>
-
-            <!-- Bottom spacing -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_medium" />
-
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Loading Progress -->
+    <!-- Loading -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="@style/Widget.Material3.CircularProgressIndicator"
@@ -261,5 +244,4 @@
         android:layout_gravity="center"
         android:indeterminateTint="@color/primary"
         android:visibility="gone" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
