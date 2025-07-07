@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.afin.jauharnafissubmission1expert.R
+import com.afin.jauharnafissubmission1expert.core.utils.EventObserver
 import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.core.utils.ViewModelFactory
 import com.afin.jauharnafissubmission1expert.core.utils.showToast
@@ -39,10 +40,32 @@ class LoginActivity : AppCompatActivity() {
         }
 
         setupAction()
+        setupObservers()
         checkIfLoggedIn()
     }
 
-    // Dilakukan pengecekan apakah user sudah login apa belum
+    private fun setupObservers() {
+        // Observe login result dengan EventObserver
+        viewModel.loginResult.observe(this, EventObserver { result ->
+            when (result) {
+                is Result.Loading -> {
+                    showLoading(true)
+                }
+
+                is Result.Success -> {
+                    showLoading(false)
+                    showToast(getString(R.string.login_success))
+                    navigateToMain()
+                }
+
+                is Result.Error -> {
+                    showLoading(false)
+                    showToast(result.message)
+                }
+            }
+        })
+    }
+
     private fun checkIfLoggedIn() {
         lifecycleScope.launch {
             viewModel.getUser().collect { user ->
@@ -56,7 +79,6 @@ class LoginActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.btnBack.visibility = View.GONE
 
-        // Login button
         binding.btnLogin.setOnClickListener {
             val email = binding.edLoginEmail.text.toString().trim()
             val password = binding.edLoginPassword.text.toString()
@@ -66,12 +88,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // Register Button
         binding.tvRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
 
-            // memakai animasi transisi
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 overrideActivityTransition(
                     OVERRIDE_TRANSITION_OPEN,
@@ -105,24 +125,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun performLogin(email: String, password: String) {
-        viewModel.login(email, password).observe(this) { result ->
-            when (result) {
-                is Result.Loading -> {
-                    showLoading(true)
-                }
-
-                is Result.Success -> {
-                    showLoading(false)
-                    showToast(getString(R.string.login_success))
-                    navigateToMain()
-                }
-
-                is Result.Error -> {
-                    showLoading(false)
-                    showToast(result.message)
-                }
-            }
-        }
+        viewModel.login(email, password)
     }
 
     private fun showLoading(isLoading: Boolean) {

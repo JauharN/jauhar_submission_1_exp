@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.afin.jauharnafissubmission1expert.R
+import com.afin.jauharnafissubmission1expert.core.utils.EventObserver
 import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.core.utils.ViewModelFactory
 import com.afin.jauharnafissubmission1expert.core.utils.showToast
@@ -37,6 +38,27 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         setupAction()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel.registerResult.observe(this, EventObserver { result ->
+            when (result) {
+                is Result.Loading -> {
+                    showLoading(true)
+                }
+
+                is Result.Success -> {
+                    showLoading(false)
+                    showSuccessDialog()
+                }
+
+                is Result.Error -> {
+                    showLoading(false)
+                    showToast(result.message)
+                }
+            }
+        })
     }
 
     private fun setupAction() {
@@ -87,23 +109,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun performRegister(name: String, email: String, password: String) {
-        viewModel.register(name, email, password).observe(this) { result ->
-            when (result) {
-                is Result.Loading -> {
-                    showLoading(true)
-                }
-
-                is Result.Success -> {
-                    showLoading(false)
-                    showSuccessDialog()
-                }
-
-                is Result.Error -> {
-                    showLoading(false)
-                    showToast(result.message)
-                }
-            }
-        }
+        viewModel.register(name, email, password)
     }
 
     private fun showSuccessDialog() {

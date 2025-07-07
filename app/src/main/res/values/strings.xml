@@ -79,4 +79,6 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="version">v1.0.0</string>
     <string name="intro">Share Your Story</string>
+    <string name="location_format">Lat: %1$.5f, Lon: %2$.5f</string>
+
 </resources>

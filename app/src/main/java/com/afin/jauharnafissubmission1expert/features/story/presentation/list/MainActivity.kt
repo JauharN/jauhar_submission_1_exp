@@ -12,6 +12,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afin.jauharnafissubmission1expert.R
+import com.afin.jauharnafissubmission1expert.core.utils.EventObserver
 import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.core.utils.ViewModelFactory
 import com.afin.jauharnafissubmission1expert.core.utils.showToast
@@ -45,19 +46,16 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        window.statusBarColor = getColor(R.color.surface)
-
         setupRecyclerView()
         setupAction()
-        observeInitialData()
+        setupObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        observeRefresh()
+        viewModel.refreshStories()
     }
 
-    // Recycler View
     private fun setupRecyclerView() {
         storyAdapter = StoryAdapter { story, imageView ->
             val intent = Intent(this, DetailActivity::class.java)
@@ -78,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.swipeRefresh.setOnRefreshListener {
-            observeRefresh()
+            viewModel.refreshStories()
         }
 
         binding.actionLogout.setOnClickListener {
@@ -90,16 +88,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeInitialData() {
+    private fun setupObservers() {
+        // Observe initial stories
         viewModel.stories.observe(this) { result ->
             handleStoryResult(result)
         }
-    }
 
-    private fun observeRefresh() {
-        viewModel.refreshStories().observe(this) { result ->
+        // Observe refresh stories
+        viewModel.refreshStories.observe(this) { result ->
             handleStoryResult(result, isRefreshing = true)
         }
+
+        // Observe logout event
+        viewModel.logoutEvent.observe(this, EventObserver {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+        })
     }
 
     private fun handleStoryResult(
@@ -161,10 +167,5 @@ class MainActivity : AppCompatActivity() {
 
     private fun performLogout() {
         viewModel.logout()
-
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
-        finish()
     }
 }

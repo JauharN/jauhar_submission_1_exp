@@ -17,6 +17,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
     }
 
     buildTypes {
@@ -27,6 +29,8 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        debug { }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

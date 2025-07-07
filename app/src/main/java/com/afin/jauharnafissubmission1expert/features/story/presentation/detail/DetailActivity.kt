@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.afin.jauharnafissubmission1expert.R
 import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.core.utils.ViewModelFactory
 import com.afin.jauharnafissubmission1expert.core.utils.formatDate
@@ -88,7 +89,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun loadStoryFromApi(storyId: String) {
-        viewModel.getStoryDetail(storyId).observe(this) { result ->
+        viewModel.getStoryDetail(storyId)
+
+        viewModel.storyDetail.observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading(true)
@@ -134,7 +137,8 @@ class DetailActivity : AppCompatActivity() {
             // Set location jika tersedia
             if (story.lat != null && story.lon != null) {
                 llLocation.visibility = View.VISIBLE
-                tvLocation.text = "Lat: ${story.lat}, Lon: ${story.lon}"
+                val locationText = getString(R.string.location_format, story.lat, story.lon)
+                tvLocation.text = locationText
             } else {
                 llLocation.visibility = View.GONE
             }

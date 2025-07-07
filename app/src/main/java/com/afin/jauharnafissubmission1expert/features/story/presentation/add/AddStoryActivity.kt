@@ -24,6 +24,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.afin.jauharnafissubmission1expert.BuildConfig
 import com.afin.jauharnafissubmission1expert.R
+import com.afin.jauharnafissubmission1expert.core.utils.EventObserver
 import com.afin.jauharnafissubmission1expert.core.utils.ImageUtils
 import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.core.utils.ViewModelFactory
@@ -41,7 +42,6 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
-
 import java.io.File
 
 class AddStoryActivity : AppCompatActivity() {
@@ -55,7 +55,7 @@ class AddStoryActivity : AppCompatActivity() {
 
     private var currentImageFile: File? = null
     private var currentLocation: Location? = null
-    private lateinit var currentPhotoPath: String
+    private var currentPhotoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,17 +70,16 @@ class AddStoryActivity : AppCompatActivity() {
             insets
         }
 
-        // Initialize location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         setupToolbar()
         setupAction()
+        setupObservers()
 
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
 
-                // transisi animasi
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                     overrideActivityTransition(
                         OVERRIDE_TRANSITION_CLOSE,
@@ -99,6 +98,25 @@ class AddStoryActivity : AppCompatActivity() {
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setupObservers() {
+        viewModel.uploadResult.observe(this, EventObserver { result ->
+            when (result) {
+                is Result.Loading -> showLoading(true)
+                is Result.Success -> {
+                    showLoading(false)
+                    showToast(result.data)
+                    WidgetUpdateHelper.updateWidget(this)
+                    navigateToMain()
+                }
+
+                is Result.Error -> {
+                    showLoading(false)
+                    showToast(result.message)
+                }
+            }
+        })
     }
 
     private fun setupAction() {
@@ -123,12 +141,10 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    // Permission Handlers
     private fun checkCameraPermission() {
         Dexter.withContext(this)
-            .withPermissions(
-                Manifest.permission.CAMERA
-            ).withListener(object : MultiplePermissionsListener {
+            .withPermissions(Manifest.permission.CAMERA)
+            .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                     if (report.areAllPermissionsGranted()) {
                         startCamera()
@@ -148,7 +164,6 @@ class AddStoryActivity : AppCompatActivity() {
 
     private fun checkGalleryPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13+ pakai READ_MEDIA_IMAGES
             Dexter.withContext(this)
                 .withPermission(Manifest.permission.READ_MEDIA_IMAGES)
                 .withListener(object : PermissionListener {
@@ -168,7 +183,6 @@ class AddStoryActivity : AppCompatActivity() {
                     }
                 }).check()
         } else {
-            // Android < 13 pakai READ_EXTERNAL_STORAGE
             Dexter.withContext(this)
                 .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(object : PermissionListener {
@@ -215,7 +229,6 @@ class AddStoryActivity : AppCompatActivity() {
             }).check()
     }
 
-    // Camera Handler
     private fun startCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.resolveActivity(packageManager)?.also {
@@ -237,16 +250,23 @@ class AddStoryActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
-            val myFile = File(currentPhotoPath)
-            myFile.let { file ->
-                currentImageFile = file
-                binding.ivPreview.setImageBitmap(BitmapFactory.decodeFile(file.path))
-                showImage()
+            // Handle successful camera capture
+            currentPhotoPath?.let { path ->
+                val myFile = File(path)
+                myFile.let { file ->
+                    currentImageFile = file
+                    binding.ivPreview.setImageBitmap(BitmapFactory.decodeFile(file.path))
+                    showImage()
+                }
             }
+        } else {
+            // Handle cancelled camera capture
+            currentPhotoPath = null
+            currentImageFile = null
+            showToast("Pengambilan gambar dibatalkan")
         }
     }
 
-    // Gallery Handler
     private fun startGallery() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
@@ -259,8 +279,8 @@ class AddStoryActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
-            val selectedImg = result.data?.data as Uri
-            selectedImg.let { uri ->
+            val selectedImg = result.data?.data
+            selectedImg?.let { uri ->
                 val myFile = ImageUtils.uriToFile(uri, this@AddStoryActivity)
                 currentImageFile = myFile
                 binding.ivPreview.setImageURI(uri)
@@ -269,7 +289,6 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    // Location Handler
     @RequiresPermission(anyOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     private fun getLastLocation() {
         if (ContextCompat.checkSelfPermission(
@@ -289,7 +308,6 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    // Upload Handler
     private fun uploadStory() {
         val description = binding.edAddDescription.text.toString().trim()
 
@@ -312,37 +330,14 @@ class AddStoryActivity : AppCompatActivity() {
                         description,
                         currentLocation!!.latitude,
                         currentLocation!!.longitude
-                    ).observe(this) { handleUploadResult(it) }
+                    )
                 } else {
-                    viewModel.uploadStory(file, description).observe(this) {
-                        handleUploadResult(it)
-                    }
+                    viewModel.uploadStory(file, description)
                 }
             }
         }
     }
 
-    private fun handleUploadResult(result: Result<String>) {
-        when (result) {
-            is Result.Loading -> showLoading(true)
-            is Result.Success -> {
-                showLoading(false)
-                showToast(result.data)
-
-                // Update widget setelah berhasil upload
-                WidgetUpdateHelper.updateWidget(this)
-
-                navigateToMain()
-            }
-
-            is Result.Error -> {
-                showLoading(false)
-                showToast(result.message)
-            }
-        }
-    }
-
-    // UI Helpers
     private fun showImage() {
         binding.ivPreview.visibility = View.VISIBLE
         binding.llPlaceholder.visibility = View.GONE
