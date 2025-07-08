@@ -10,7 +10,8 @@ object Injection {
 
     fun provideRepository(context: Context): StoryRepository {
         val pref = UserPreference.getInstance(context.dataStore)
-        return StoryRepository.getInstance(pref)
+        val database = StoryDatabase.getInstance(context)
+        return StoryRepository.getInstance(pref, database)
     }
 
     fun provideUserPreference(context: Context): UserPreference {
@@ -19,6 +20,5 @@ object Injection {
 
     fun provideDatabase(context: Context): StoryDatabase {
         return StoryDatabase.getInstance(context)
-
     }
 }
