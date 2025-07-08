@@ -80,5 +80,6 @@
     <string name="version">v1.0.0</string>
     <string name="intro">Share Your Story</string>
     <string name="location_format">Lat: %1$.5f, Lon: %2$.5f</string>
+    <string name="retry">Coba Lagi</string>
 
 </resources>

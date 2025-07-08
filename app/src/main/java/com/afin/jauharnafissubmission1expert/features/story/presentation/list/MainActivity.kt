@@ -7,25 +7,29 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afin.jauharnafissubmission1expert.R
 import com.afin.jauharnafissubmission1expert.core.utils.EventObserver
-import com.afin.jauharnafissubmission1expert.core.utils.Result
 import com.afin.jauharnafissubmission1expert.core.utils.ViewModelFactory
 import com.afin.jauharnafissubmission1expert.core.utils.showToast
 import com.afin.jauharnafissubmission1expert.databinding.ActivityMainBinding
 import com.afin.jauharnafissubmission1expert.features.auth.presentation.login.LoginActivity
-import com.afin.jauharnafissubmission1expert.features.story.presentation.adapter.StoryAdapter
 import com.afin.jauharnafissubmission1expert.features.story.presentation.add.AddStoryActivity
+import com.afin.jauharnafissubmission1expert.features.story.presentation.adapter.LoadingStateAdapter
+import com.afin.jauharnafissubmission1expert.features.story.presentation.adapter.StoryPagingAdapter
 import com.afin.jauharnafissubmission1expert.features.story.presentation.detail.DetailActivity
+import kotlinx.coroutines.launch
+import androidx.paging.LoadState
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var storyAdapter: StoryAdapter
+    private lateinit var storyPagingAdapter: StoryPagingAdapter
 
     private val viewModel: MainViewModel by viewModels {
         ViewModelFactory.getInstance(this)
@@ -34,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -51,32 +54,63 @@ class MainActivity : AppCompatActivity() {
         setupObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.refreshStories()
-    }
+    // Tidak perlu lagi onResume untuk refresh stories karena Paging otomatis handle data lifecycle-aware
 
     private fun setupRecyclerView() {
-        storyAdapter = StoryAdapter { story, imageView ->
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.EXTRA_STORY, story)
+        storyPagingAdapter = StoryPagingAdapter { story, imageView ->
+            val intent = Intent(this, DetailActivity::class.java).apply {
+                putExtra(DetailActivity.EXTRA_STORY, story)
+            }
 
-            val options = androidx.core.app.ActivityOptionsCompat
+            val options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, imageView, "story_image")
-
             startActivity(intent, options.toBundle())
         }
 
         binding.rvStories.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = storyAdapter
+            adapter = storyPagingAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter { storyPagingAdapter.retry() }
+            )
             setHasFixedSize(true)
+        }
+
+        // Handle loading, error, empty state dari Paging
+        storyPagingAdapter.addLoadStateListener { loadState ->
+            // Tampilkan progress bar ketika sedang memuat data
+            binding.progressBar.visibility = if (loadState.source.refresh is LoadState.Loading) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            // Tampilkan data jika berhasil
+            binding.rvStories.visibility = if (loadState.source.refresh is LoadState.NotLoading) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            // Tampilkan state kosong kalau datanya habis
+            val isListEmpty = loadState.source.refresh is LoadState.NotLoading &&
+            storyPagingAdapter.itemCount == 0
+            showEmpty(isListEmpty)
+
+            // Handle jika terjadi error
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.source.refresh as? LoadState.Error
+            errorState?.let {
+                showToast(it.error.message ?: "Terjadi kesalahan saat memuat data")
+            }
         }
     }
 
     private fun setupAction() {
+        // Refresh manual lewat swipe gesture
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshStories()
+            storyPagingAdapter.refresh()
+            binding.swipeRefresh.isRefreshing = false
         }
 
         binding.actionLogout.setOnClickListener {
@@ -89,62 +123,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        // Observe initial stories
-        viewModel.stories.observe(this) { result ->
-            handleStoryResult(result)
+        // Observe data dari ViewModel dan kirim ke adapter Paging
+        viewModel.storiesPaging.observe(this) { pagingData ->
+            lifecycleScope.launch {
+                storyPagingAdapter.submitData(pagingData)
+            }
         }
 
-        // Observe refresh stories
-        viewModel.refreshStories.observe(this) { result ->
-            handleStoryResult(result, isRefreshing = true)
-        }
-
-        // Observe logout event
+        // Observe event logout
         viewModel.logoutEvent.observe(this, EventObserver {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish()
         })
-    }
-
-    private fun handleStoryResult(
-        result: Result<List<com.afin.jauharnafissubmission1expert.features.story.domain.model.Story>>,
-        isRefreshing: Boolean = false
-    ) {
-        when (result) {
-            is Result.Loading -> {
-                if (!isRefreshing) showLoading(true)
-                binding.swipeRefresh.isRefreshing = true
-                showEmpty(false)
-            }
-
-            is Result.Success -> {
-                showLoading(false)
-                binding.swipeRefresh.isRefreshing = false
-
-                if (result.data.isEmpty()) {
-                    showEmpty(true)
-                    storyAdapter.submitList(emptyList())
-                } else {
-                    showEmpty(false)
-                    storyAdapter.submitList(result.data)
-                }
-            }
-
-            is Result.Error -> {
-                showLoading(false)
-                binding.swipeRefresh.isRefreshing = false
-                showToast(result.message)
-                if (storyAdapter.currentList.isEmpty()) {
-                    showEmpty(true)
-                }
-            }
-        }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showEmpty(isEmpty: Boolean) {
